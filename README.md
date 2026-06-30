@@ -21,10 +21,14 @@ Day-to-day helpers from [rcrdk/utils](https://github.com/rcrdk/utils) — TS/Rea
 
 | Guide | Description |
 |-------|-------------|
-| [Overview](https://github.com/rcrdk/utils/blob/main/README.md) | Next.js shell, scripts, structure, conventions |
-| [Util functions](https://github.com/rcrdk/utils/blob/main/src/utils/README.md) | Pure helpers by domain — `groupBy`, `generateSlug`, `cn`, server actions |
-| [Components](https://github.com/rcrdk/utils/blob/main/src/components/README.md) | Shared React components — conventions and polymorphic `Text` |
-| [Hooks](https://github.com/rcrdk/utils/blob/main/src/hooks/README.md) | Debounce, clipboard, geolocation, IndexedDB |
+| [Overview](https://github.com/rcrdk/utils/blob/main/README.md) | Next.js 16 shell, scripts, structure, conventions |
+| [Util functions](https://github.com/rcrdk/utils/blob/main/src/utils/README.md) | Pure helpers by domain — `groupBy`, `generateSlug`, `cn`, authenticated server action wrappers |
+| [Components](https://github.com/rcrdk/utils/blob/main/src/components/README.md) | Shared React components — conventions, index, and usage (e.g. polymorphic `PolymorphicComponent` with an `as` prop) |
+| [Hooks](https://github.com/rcrdk/utils/blob/main/src/hooks/README.md) | Shared React hooks — debounce, storage, observers, geolocation, IndexedDB, and more |
+| [Lib](https://github.com/rcrdk/utils/blob/main/src/lib/README.md) | Third-party integrations — Auth.js, Sentry, and TanStack Query wrappers |
+| [Auth](https://github.com/rcrdk/utils/blob/main/src/lib/auth/README.md) | Google OAuth setup, session helpers, and protected action integration |
+| [Sentry](https://github.com/rcrdk/utils/blob/main/src/lib/sentry/README.md) | Error reporting and Sentry SDK configuration |
+| [Config](https://github.com/rcrdk/utils/blob/main/src/config/README.md) | Shared constants — auth route paths, IndexedDB stores, TanStack Query defaults |
 | [Developer experience](https://github.com/rcrdk/utils/blob/main/README-DX.md) | ESLint, Prettier, Husky, commitlint, TypeScript |
 | [Agent setup](https://github.com/rcrdk/utils/blob/main/README-AGENTS.md) | Rules symlinks and `agents/` layout |
 | [Agent guide](https://github.com/rcrdk/utils/blob/main/AGENTS.md) | Conventions, commands, Next.js docs index |
