@@ -11,6 +11,7 @@ Guidelines, MCP servers, skills, and context layers for coding agents.
 | Name | Description |
 |------|-------------|
 | [Karpathy Guidelines](https://github.com/multica-ai/andrej-karpathy-skills) | Agent behavior rules — clarify assumptions, minimal diffs, verifiable goals |
+| [Superpowers](https://github.com/obra/superpowers) | Agentic skills framework — brainstorming, TDD, planning, subagent-driven development, and code review workflows |
 | [codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) | Local repo knowledge graph — calls, routes, architecture, semantic search |
 
 ---
@@ -34,3 +35,14 @@ Day-to-day helpers from [rcrdk/utils](https://github.com/rcrdk/utils) — TS/Rea
 | [Agent guide](https://github.com/rcrdk/utils/blob/main/AGENTS.md) | Conventions, commands, Next.js docs index |
 | [Rules index](https://github.com/rcrdk/utils/blob/main/agents/README.md) | TypeScript, React, imports, commits, and more |
 | [Editor setup](https://github.com/rcrdk/utils/blob/main/.vscode/README.md) | VS Code / Cursor — extensions, aliases, Tailwind IntelliSense |
+
+---
+
+## ⚙️ Workflows
+
+Shell aliases, Git SSH setup, and other local dev workflows documented in this repo.
+
+| Guide | Description |
+|-------|-------------|
+| [hero-test shortcut](./zshrc-hero-test-shortcut.md) | zsh helper for running Jest in MySide Hero — paths, name patterns, and snapshot updates |
+| [Git SSH — multiple accounts (macOS)](./git-ssh-multiple-accounts-macos.md) | Separate SSH keys for personal GitHub, MySide GitHub, and MySide GitLab |
