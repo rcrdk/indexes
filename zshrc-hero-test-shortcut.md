@@ -8,12 +8,18 @@ Shell helper for running Jest tests in MySide Hero projects. Defined in `~/.zshr
 
 | Mode | When used | Jest invocation |
 |------|-----------|-----------------|
-| **By path** | At least one directory or test file was resolved | `yarn jest -u --runTestsByPath <files...>` |
-| **By pattern** | No paths/files, only non-file arguments | `yarn jest -u <patterns...>` |
+| **By path** | At least one directory or file exists on disk | `yarn jest -u --coverage=false --silent <paths...>` |
+| **By pattern** | No paths/files, only non-file arguments | `yarn jest -u --coverage=false --silent <patterns...>` |
 
 Path mode takes precedence. If any argument resolves to a file or directory, pattern arguments in the same invocation are ignored.
 
-The `-u` flag updates Jest snapshots.
+Both modes pass arguments straight to Jest — directories are not expanded into individual test files in the shell. Jest discovers tests under a directory itself.
+
+Flags:
+
+- `-u` — update Jest snapshots
+- `--coverage=false` — skip coverage collection for faster focused runs
+- `--silent` — suppress console output from tests (failures still reported)
 
 ## Usage
 
@@ -21,7 +27,7 @@ The `-u` flag updates Jest snapshots.
 # Run a single test file
 hero-test src/components/Button/Button.test.tsx
 
-# Run all tests under a directory (recursive)
+# Run all tests under a directory (Jest discovers recursively)
 hero-test src/components/Button
 
 # Run tests matching a Jest pattern (file/name filter)
@@ -38,7 +44,7 @@ hero-test src/components src/utils
 
 Next.js App Router paths often include symbols that zsh treats specially: parentheses `()`, brackets `[]`, and `@` for parallel routes. **Always quote these paths** (or escape the symbols). The `noglob` alias only disables glob expansion; it does not protect unquoted `( ) [ ]`.
 
-Use **filesystem paths**, not TypeScript import aliases like `@/components/...` — `hero-test` checks paths on disk with `find`, `-f`, and `-d`.
+Use **filesystem paths**, not TypeScript import aliases like `@/components/...` — `hero-test` checks paths on disk with `-f` and `-d`.
 
 ```bash
 # Route group — parentheses are special in zsh
@@ -79,22 +85,19 @@ hero-test 'app/(shop)/products/[slug]/reviews'
 | `@folder` | Parallel route slot | `@` can interact with history expansion |
 | `(.)` / `(...)` | Intercepting route | Parentheses + brackets combined |
 
-If a path fails with “no test files found”, verify the quoted path exists (`ls 'app/(dashboard)/settings'`) and that you are in the project root.
+If a path fails, verify the quoted path exists (`ls 'app/(dashboard)/settings'`) and that you are in the project root.
 
 ## Argument handling
 
 For each argument, `hero-test` applies this logic:
 
-1. **Directory** — recursively finds test files with:
-   - `*.spec.ts`, `*.spec.tsx`
-   - `*.test.ts`, `*.test.tsx`
-2. **Existing file** — added to the run list as-is.
-3. **Anything else** — treated as a Jest test name pattern (e.g. `-t` style matching via Jest’s positional args).
+1. **Directory or existing file** — added to the Jest path list as-is (Jest handles discovery under directories).
+2. **Anything else** — treated as a Jest test name pattern (e.g. `-t` style matching via Jest’s positional args).
 
-If no test files are found and no patterns were given, it prints an error and exits with code `1`:
+If no paths and no patterns were given, it prints an error and exits with code `1`:
 
 ```
-hero-test: no test files found for: <args>
+hero-test: no test paths or patterns provided: <args>
 ```
 
 ## Implementation notes
@@ -160,34 +163,28 @@ hero-test 'app/(dashboard)/account'
 ```zsh
 # Hero test alias for running tests by path or pattern
 __hero-test() {
-  local -a test_paths=()
+  local -a jest_paths=()
   local -a test_patterns=()
 
   for arg in "$@"; do
-    if [[ -d "$arg" ]]; then
-      while IFS= read -r -d '' file; do
-        test_paths+=("$file")
-      done < <(
-        find "$arg" \( -name '*.spec.ts' -o -name '*.spec.tsx' -o -name '*.test.ts' -o -name '*.test.tsx' \) -print0
-      )
-    elif [[ -f "$arg" ]]; then
-      test_paths+=("$arg")
+    if [[ -d "$arg" ]] || [[ -f "$arg" ]]; then
+      jest_paths+=("$arg")
     else
       test_patterns+=("$arg")
     fi
   done
 
-  if (( ${#test_paths[@]} > 0 )); then
-    yarn jest -u --runTestsByPath "${test_paths[@]}"
+  if (( ${#jest_paths[@]} > 0 )); then
+    yarn jest -u --coverage=false --silent "${jest_paths[@]}"
     return
   fi
 
   if (( ${#test_patterns[@]} > 0 )); then
-    yarn jest -u "${test_patterns[@]}"
+    yarn jest -u --coverage=false --silent "${test_patterns[@]}"
     return
   fi
 
-  echo "hero-test: no test files found for: $*" >&2
+  echo "hero-test: no test paths or patterns provided: $*" >&2
   return 1
 }
 
