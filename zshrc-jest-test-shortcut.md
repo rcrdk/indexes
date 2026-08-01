@@ -1,10 +1,10 @@
-# hero-test
+# jest-test
 
-Shell helper for running Jest tests in MySide Hero projects. Defined in `~/.zshrc` as part of the **MySide Hero aliases** block.
+Shell helper for running Jest tests in Node/Next.js projects. Defined in `~/.zshrc`.
 
 ## Overview
 
-`hero-test` wraps `yarn jest -u` and accepts mixed arguments: directories, files, or Jest name patterns. It classifies each argument automatically and runs the appropriate Jest mode.
+`jest-test` wraps `yarn jest -u` and accepts mixed arguments: directories, files, or Jest name patterns. It classifies each argument automatically and runs the appropriate Jest mode.
 
 | Mode | When used | Jest invocation |
 |------|-----------|-----------------|
@@ -25,53 +25,53 @@ Flags:
 
 ```bash
 # Run a single test file
-hero-test src/components/Button/Button.test.tsx
+jest-test src/components/Button/Button.test.tsx
 
 # Run all tests under a directory (Jest discovers recursively)
-hero-test src/components/Button
+jest-test src/components/Button
 
 # Run tests matching a Jest pattern (file/name filter)
-hero-test Button
+jest-test Button
 
 # Multiple files
-hero-test src/foo.test.ts src/bar.spec.tsx
+jest-test src/foo.test.ts src/bar.spec.tsx
 
 # Multiple directories
-hero-test src/components src/utils
+jest-test src/components src/utils
 ```
 
 ## Next.js paths with special characters
 
 Next.js App Router paths often include symbols that zsh treats specially: parentheses `()`, brackets `[]`, and `@` for parallel routes. **Always quote these paths** (or escape the symbols). The `noglob` alias only disables glob expansion; it does not protect unquoted `( ) [ ]`.
 
-Use **filesystem paths**, not TypeScript import aliases like `@/components/...` — `hero-test` checks paths on disk with `-f` and `-d`.
+Use **filesystem paths**, not TypeScript import aliases like `@/components/...` — `jest-test` checks paths on disk with `-f` and `-d`.
 
 ```bash
 # Route group — parentheses are special in zsh
-hero-test 'app/(dashboard)/settings/page.test.tsx'
-hero-test 'app/(marketing)/about'
+jest-test 'app/(dashboard)/settings/page.test.tsx'
+jest-test 'app/(marketing)/about'
 
 # Dynamic segment — brackets are glob character classes
-hero-test 'app/products/[id]/page.test.tsx'
-hero-test 'app/users/[userId]/profile'
+jest-test 'app/products/[id]/page.test.tsx'
+jest-test 'app/users/[userId]/profile'
 
 # Catch-all and optional catch-all
-hero-test 'app/docs/[...slug]/DocsPage.test.tsx'
-hero-test 'app/shop/[[...category]]'
+jest-test 'app/docs/[...slug]/DocsPage.test.tsx'
+jest-test 'app/shop/[[...category]]'
 
 # Parallel route (@folder)
-hero-test 'app/@modal/(.)login/LoginModal.test.tsx'
-hero-test 'app/@sidebar/default.test.tsx'
+jest-test 'app/@modal/(.)login/LoginModal.test.tsx'
+jest-test 'app/@sidebar/default.test.tsx'
 
 # Intercepting route — dots and parentheses together
-hero-test 'app/photos/(.)[id]/PhotoModal.test.tsx'
+jest-test 'app/photos/(.)[id]/PhotoModal.test.tsx'
 
 # Colocated tests next to a page/layout
-hero-test 'app/(auth)/login/page.test.tsx'
-hero-test 'src/app/checkout/[orderId]/confirmation/page.spec.tsx'
+jest-test 'app/(auth)/login/page.test.tsx'
+jest-test 'src/app/checkout/[orderId]/confirmation/page.spec.tsx'
 
 # Entire app segment with mixed symbols
-hero-test 'app/(shop)/products/[slug]/reviews'
+jest-test 'app/(shop)/products/[slug]/reviews'
 ```
 
 **Quoting cheat sheet**
@@ -89,7 +89,7 @@ If a path fails, verify the quoted path exists (`ls 'app/(dashboard)/settings'`)
 
 ## Argument handling
 
-For each argument, `hero-test` applies this logic:
+For each argument, `jest-test` applies this logic:
 
 1. **Directory or existing file** — added to the Jest path list as-is (Jest handles discovery under directories).
 2. **Anything else** — treated as a Jest test name pattern (e.g. `-t` style matching via Jest’s positional args).
@@ -97,72 +97,62 @@ For each argument, `hero-test` applies this logic:
 If no paths and no patterns were given, it prints an error and exits with code `1`:
 
 ```
-hero-test: no test paths or patterns provided: <args>
+jest-test: no test paths or patterns provided: <args>
 ```
 
 ## Implementation notes
 
-- **Function:** `__hero-test` (internal)
-- **Alias:** `hero-test='noglob __hero-test'`
+- **Function:** `__jest-test` (internal)
+- **Alias:** `jest-test='noglob __jest-test'`
 - **`noglob`:** prevents zsh from expanding globs like `*` before the function runs, so patterns are passed through to Jest unchanged.
 - **Requires:** `yarn` and Jest configured in the current project (typically run from the repo root).
-
-## Related Hero aliases
-
-Also defined in `~/.zshrc`:
-
-| Alias | Purpose |
-|-------|---------|
-| `hero-pull` | Fetch all remotes and rebase pull from `origin main` |
-| `hero-clear` | Clear Jest cache and delete merged local branches |
-| `hero-check` | Full check: typecheck, lint:fix, format, and all tests |
 
 ## Examples by scenario
 
 ### Focused file or folder during development
 
 ```bash
-cd ~/path/to/hero-project
-hero-test src/features/checkout
+cd ~/path/to/my-project
+jest-test src/features/checkout
 ```
 
 ### Snapshot update for one suite
 
 ```bash
-hero-test src/features/checkout/Checkout.test.tsx
+jest-test src/features/checkout/Checkout.test.tsx
 ```
 
 ### Run tests whose names match a substring
 
 ```bash
-hero-test "renders loading state"
+jest-test "renders loading state"
 ```
 
 ### Mixed args (paths win)
 
 ```bash
 # Runs only the file — "Button" is ignored because a path was found
-hero-test src/components/Button/Button.test.tsx Button
+jest-test src/components/Button/Button.test.tsx Button
 ```
 
 ### Next.js route with dynamic segment
 
 ```bash
-cd ~/path/to/hero-project
-hero-test 'app/listings/[listingId]/ListingDetails.test.tsx'
+cd ~/path/to/my-project
+jest-test 'app/listings/[listingId]/ListingDetails.test.tsx'
 ```
 
 ### Next.js route group (all tests under segment)
 
 ```bash
-hero-test 'app/(dashboard)/account'
+jest-test 'app/(dashboard)/account'
 ```
 
 ## Source
 
 ```zsh
-# Hero test alias for running tests by path or pattern
-__hero-test() {
+# Jest test alias for running tests by path or pattern
+__jest-test() {
   local -a jest_paths=()
   local -a test_patterns=()
 
@@ -184,9 +174,9 @@ __hero-test() {
     return
   fi
 
-  echo "hero-test: no test paths or patterns provided: $*" >&2
+  echo "jest-test: no test paths or patterns provided: $*" >&2
   return 1
 }
 
-alias hero-test='noglob __hero-test'
+alias jest-test='noglob __jest-test'
 ```

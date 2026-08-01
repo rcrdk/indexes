@@ -1,12 +1,11 @@
 # Git SSH Guide - Multiple Accounts (macOS)
 
-This guide configures three Git remotes with separate SSH keys:
+This guide configures two GitHub remotes with separate SSH keys:
 
   Source            Alias               Host
   ----------------- ------------------- -----------------------
   Personal GitHub   `github-personal`   `github.com`
-  MySide GitHub     `github-myside`     `github.com`
-  MySide GitLab     `gitlab-myside`     `git.febacapital.com`
+  Work GitHub       `github-work`       `github.com`
 
 Once configured, each repository automatically uses the correct SSH key.
 You can use `git clone`, `git pull`, `git push`, and `git fetch` without
@@ -24,20 +23,12 @@ ssh-keygen -t ed25519 \
   -f ~/.ssh/id_ed25519_personal
 ```
 
-### MySide GitHub
+### Work GitHub
 
 ``` bash
 ssh-keygen -t ed25519 \
-  -C "your-work-email@myside.com.br" \
-  -f ~/.ssh/id_ed25519_github_myside
-```
-
-### MySide GitLab
-
-``` bash
-ssh-keygen -t ed25519 \
-  -C "your-work-email@myside.com.br" \
-  -f ~/.ssh/id_ed25519_gitlab_myside
+  -C "your-work-email@example.com" \
+  -f ~/.ssh/id_ed25519_work
 ```
 
 You'll be prompted for a passphrase. A passphrase is recommended because
@@ -51,10 +42,8 @@ Expected structure:
 ├── config
 ├── id_ed25519_personal
 ├── id_ed25519_personal.pub
-├── id_ed25519_github_myside
-├── id_ed25519_github_myside.pub
-├── id_ed25519_gitlab_myside
-└── id_ed25519_gitlab_myside.pub
+├── id_ed25519_work
+└── id_ed25519_work.pub
 ```
 
 ------------------------------------------------------------------------
@@ -71,8 +60,7 @@ eval "$(ssh-agent -s)"
 
 ``` bash
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519_personal
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github_myside
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519_gitlab_myside
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519_work
 ```
 
 Verify:
@@ -103,18 +91,10 @@ Host github-personal
     AddKeysToAgent yes
     UseKeychain yes
 
-Host github-myside
+Host github-work
     HostName github.com
     User git
-    IdentityFile ~/.ssh/id_ed25519_github_myside
-    IdentitiesOnly yes
-    AddKeysToAgent yes
-    UseKeychain yes
-
-Host gitlab-myside
-    HostName git.febacapital.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_gitlab_myside
+    IdentityFile ~/.ssh/id_ed25519_work
     IdentitiesOnly yes
     AddKeysToAgent yes
     UseKeychain yes
@@ -139,22 +119,13 @@ cat ~/.ssh/id_ed25519_personal.pub
 
 Add it to **GitHub → Settings → SSH and GPG keys**.
 
-### MySide GitHub
+### Work GitHub
 
 ``` bash
-cat ~/.ssh/id_ed25519_github_myside.pub
+cat ~/.ssh/id_ed25519_work.pub
 ```
 
-Add it to your MySide GitHub account under **Settings → SSH and GPG
-keys**.
-
-### MySide GitLab
-
-``` bash
-cat ~/.ssh/id_ed25519_gitlab_myside.pub
-```
-
-Add it to **GitLab → Preferences → SSH Keys**.
+Add it to your work GitHub account under **Settings → SSH and GPG keys**.
 
 ------------------------------------------------------------------------
 
@@ -162,8 +133,7 @@ Add it to **GitLab → Preferences → SSH Keys**.
 
 ``` bash
 ssh -T git@github-personal
-ssh -T git@github-myside
-ssh -T git@gitlab-myside
+ssh -T git@github-work
 ```
 
 ------------------------------------------------------------------------
@@ -176,16 +146,10 @@ ssh -T git@gitlab-myside
 git clone git@github-personal:your-user/project.git
 ```
 
-### MySide GitHub
+### Work GitHub
 
 ``` bash
-git clone git@github-myside:MySide-K9/project.git
-```
-
-### MySide GitLab
-
-``` bash
-git clone git@gitlab-myside:group/project.git
+git clone git@github-work:your-org/project.git
 ```
 
 ------------------------------------------------------------------------
@@ -198,11 +162,8 @@ Update remotes instead of recloning.
 # Personal
 git remote set-url origin git@github-personal:your-user/project.git
 
-# MySide GitHub
-git remote set-url origin git@github-myside:MySide-K9/project.git
-
-# MySide GitLab
-git remote set-url origin git@gitlab-myside:group/project.git
+# Work GitHub
+git remote set-url origin git@github-work:your-org/project.git
 ```
 
 Verify:
