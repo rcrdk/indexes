@@ -18,6 +18,7 @@ Shared agent config for rcrdk TypeScript/React repos lives in **[agent-kit](http
 | Command | Purpose |
 | ------- | ------- |
 | `/rcrdk-setup-agent-kit` | Bootstrap or refresh agent-kit — submodule add/update, scripts, gitignore, symlinks |
+| `/rcrdk-setup-dx` | Install selected DX from rcrdk/utils — ESLint, Prettier, TS, EditorConfig, VS Code, Husky |
 | `/rcrdk-index-codebase` | Index/reindex with Codebase Memory MCP |
 | `/rcrdk-commit-unstaged` | Small Conventional Commits from unstaged/untracked changes |
 | `/rcrdk-review-rules` | Review branch diff against project rules |
