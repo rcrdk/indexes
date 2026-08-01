@@ -17,7 +17,7 @@ Shared agent config for rcrdk TypeScript/React repos lives in **[agent-kit](http
 
 | Command | Purpose |
 | ------- | ------- |
-| `/rcrdk-setup-agent-kit` | Bootstrap agent-kit in a repo — submodule, scripts, gitignore, symlinks |
+| `/rcrdk-setup-agent-kit` | Bootstrap or refresh agent-kit — submodule add/update, scripts, gitignore, symlinks |
 | `/rcrdk-index-codebase` | Index/reindex with Codebase Memory MCP |
 | `/rcrdk-commit-unstaged` | Small Conventional Commits from unstaged/untracked changes |
 | `/rcrdk-review-rules` | Review branch diff against project rules |
@@ -86,4 +86,5 @@ Shell aliases, Git SSH setup, and other local dev workflows documented in this r
 | Guide | Description |
 | ----- | ----------- |
 | [jest-test shortcut](./zshrc-jest-test-shortcut.md) | zsh helper for running Jest — paths, name patterns, and snapshot updates |
+| [Git workflow shortcuts](./zshrc-git-workflow-shortcuts.md) | zsh aliases — sync `origin/main` with rebase, clear Jest cache, prune merged branches |
 | [Git SSH — multiple accounts (macOS)](./git-ssh-multiple-accounts-macos.md) | Separate SSH keys for personal and work GitHub accounts |
