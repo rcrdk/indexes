@@ -10,7 +10,7 @@ Shared agent config for rcrdk TypeScript/React repos lives in **[agent-kit](http
 
 | Resource | Description |
 | -------- | ----------- |
-| [agent-kit](https://github.com/rcrdk/agent-kit) | Rules (`rules/shared/` + `rules/<project>/` + `rules/required/`), commands, bundled `skills/`, `setup-consumer.mjs`, templates |
+| [agent-kit](https://github.com/rcrdk/agent-kit) | Rules (flat `rules/*.mdc` — every rule applies to every consumer), commands, bundled `skills/`, `setup-consumer.mjs`, templates |
 | [agent-kit README](https://github.com/rcrdk/agent-kit/blob/main/README.md) | Quick start, slash commands, skills wiring, ecosystem, consumer layout |
 
 **Slash commands** (all repos that vendor agent-kit):
@@ -73,3 +73,4 @@ Shell aliases, Git SSH setup, and other local dev workflows documented in this r
 | [jest-test shortcut](./zshrc-jest-test-shortcut.md) | zsh helper for running Jest — paths, name patterns, and snapshot updates |
 | [Git workflow shortcuts](./zshrc-git-workflow-shortcuts.md) | zsh aliases — sync `origin/main` with rebase, clear Jest cache, prune merged branches |
 | [Git SSH — multiple accounts (macOS)](./git-ssh-multiple-accounts-macos.md) | Separate SSH keys for personal and work GitHub accounts |
+| [GitHub CLI — multiple accounts](./github-cli-multiple-accounts.md) | `gh-personal` / `gh-myside` aliases via `GH_CONFIG_DIR` — which alias agents must use |
